@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Deck Support</title>
+<meta name="description" content="Help and contact for Agent Deck, mission control for Claude Code on the Mac.">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="icon.png">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="icon.png" alt="Agent Deck icon">
+    <div>
+      <h1>Agent Deck Support</h1>
+      <p>Mission control for Claude Code, by App Studio 427</p>
+    </div>
+  </header>
+  <nav>
+    <a href="#contact">Contact</a>
+    <a href="#start">Getting started</a>
+    <a href="#faq">Common questions</a>
+    <a href="privacy.html">Privacy policy</a>
+  </nav>
+
+  <section id="contact" class="card contact">
+    <h3>Contact us</h3>
+    Email <a href="mailto:support@appstudio427.com">support@appstudio427.com</a>
+    <p class="muted" style="font-size:15px;margin:8px 0 0">Please include your Agent Deck version (Agent Deck › About Agent Deck), your macOS version, and what you were doing when the problem happened.</p>
+  </section>
+
+  <h2 id="start">Getting started</h2>
+  <p>Agent Deck works alongside Claude Code, Anthropic's command-line coding tool. You'll need:</p>
+  <ul>
+    <li>A Mac with macOS 12 or later</li>
+    <li>Claude Code, installed separately</li>
+    <li>A Claude account (or, for Local mode, Ollama with a downloaded model)</li>
+  </ul>
+  <p><strong>Install Claude Code.</strong> Open Terminal, paste this line and press Return:</p>
+  <pre><code>curl -fsSL https://claude.ai/install.sh | bash</code></pre>
+  <p>Then type <code>claude</code> and press Return to sign in with your Claude account. You can also use the <strong>Let's get started</strong> checklist in Agent Deck, which copies the command for you.</p>
+  <p><strong>Add a project.</strong> Click <strong>New project</strong>, then <strong>Browse…</strong>, and pick your project folder. Agent Deck adds its hooks there so it can follow your sessions. Your code isn't changed.</p>
+  <p><strong>Start Claude.</strong> On the project's <strong>Claude</strong> tab, click <strong>Run in Terminal</strong>. The session appears in <strong>Topology</strong> as soon as you send your first prompt.</p>
+
+  <h2 id="faq">Common questions</h2>
+
+  <div class="card">
+    <h3>Why does Claude run in Terminal instead of inside Agent Deck?</h3>
+    <p>Apps from the Mac App Store run in Apple's App Sandbox, which doesn't allow them to host a terminal. Agent Deck opens a Terminal window for you and follows the session from there.</p>
+  </div>
+
+  <div class="card">
+    <h3>macOS asked whether Agent Deck may control Terminal</h3>
+    <p>Click <strong>OK</strong> so <strong>Run in Terminal</strong> can open the window for you. If you clicked <strong>Don't Allow</strong>, turn it back on in <strong>System Settings › Privacy &amp; Security › Automation › Agent Deck › Terminal</strong>. Without it, Agent Deck copies the command instead, and you can paste it into Terminal with ⌘V.</p>
+  </div>
+
+  <div class="card">
+    <h3>My session doesn't show up in Topology</h3>
+    <p>Check that the project header says <strong>Hooks installed</strong>. If it doesn't, click <strong>Install hooks</strong>. Sessions started before the hooks were installed aren't tracked, so start a new one with <strong>Run in Terminal</strong>.</p>
+  </div>
+
+  <div class="card">
+    <h3>Resume or my own agents are missing</h3>
+    <p>Agent Deck can only read your Claude folder (<code>~/.claude</code>) after you allow it. Go to <strong>Settings › Claude Code</strong>, click <strong>Allow access…</strong> next to <strong>Claude folder</strong>, and choose the folder that opens.</p>
+  </div>
+
+  <div class="card">
+    <h3>How do I use Local mode?</h3>
+    <p>Install Ollama from ollama.com and download a coding model in <strong>Settings › Local models</strong>. Then switch a project from <strong>Anthropic</strong> to <strong>Local</strong> in its header. Local models run on your Mac and use no Claude tokens, but they're generally less capable than Claude.</p>
+  </div>
+
+  <div class="card">
+    <h3>Where is my data kept?</h3>
+    <p>Everything stays on your Mac, inside Agent Deck's own app folder. See the <a href="privacy.html">privacy policy</a> for details.</p>
+  </div>
+
+  <footer>
+    Agent Deck is made by App Studio 427 and is not affiliated with Anthropic. Claude and Claude Code are trademarks of Anthropic.
+    · <a href="privacy.html">Privacy policy</a>
+  </footer>
+</div>
+</body>
+</html>
