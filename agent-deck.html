@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Deck — Mission control for Claude Code</title>
+<meta name="description" content="See every Claude Code session, subagent and handoff live, across all your projects. For Mac and Windows.">
+<meta property="og:title" content="Agent Deck — Mission control for Claude Code">
+<meta property="og:description" content="Every agent. Every session. One deck.">
+<meta property="og:image" content="https://appstudio427.github.io/agent-deck-support/media/poster.jpg">
+<link rel="icon" href="icon.png">
+<style>
+  :root { color-scheme: dark; --bg: #090b13; --card: #141826; --line: #252b3d; --text: #e9ecf5; --muted: #9aa2b5; --accent: #8ea4ff; --teal: #4fd1c5; --amber: #f6ad55; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  a { color: var(--accent); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+  nav { display: flex; align-items: center; gap: 22px; padding: 18px 0; flex-wrap: wrap; }
+  nav .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); text-decoration: none; margin-right: auto; }
+  nav .brand img { width: 30px; height: 30px; border-radius: 7px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 15px; }
+  nav a:hover { color: var(--text); }
+  @media (max-width: 520px) { nav { gap: 16px; } nav .hide-sm { display: none; } }
+
+  .hero { position: relative; padding: 40px 0 20px; text-align: center; }
+  .hero::before { content: ""; position: absolute; inset: -80px 0 auto; height: 600px; z-index: -1;
+    background: radial-gradient(ellipse 60% 60% at 50% 30%, rgba(92,120,255,.28), transparent 70%); }
+  .hero h1 { font-size: clamp(34px, 6vw, 60px); line-height: 1.08; margin: 0 0 14px; letter-spacing: -.02em; }
+  .hero h1 span { color: var(--accent); }
+  .hero p.lead { font-size: clamp(17px, 2.2vw, 21px); color: var(--muted); max-width: 680px; margin: 0 auto 26px; }
+  .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 40px; }
+  .btn { display: inline-flex; flex-direction: column; align-items: flex-start; padding: 11px 20px; border-radius: 12px; text-decoration: none; min-width: 210px; border: 1px solid var(--line); background: var(--card); color: var(--text); }
+  .btn small { font-size: 12px; color: var(--muted); letter-spacing: .02em; }
+  .btn b { font-size: 17px; }
+  .btn.primary { background: #4f6cf0; border-color: #4f6cf0; }
+  .btn.primary small { color: #dfe5ff; }
+  .btn.soon { opacity: .75; cursor: default; }
+  .poster { display: block; width: 100%; border-radius: 16px; box-shadow: 0 30px 100px rgba(80,110,255,.25), 0 0 0 1px var(--line); }
+
+  section { padding: 70px 0 10px; }
+  h2 { font-size: clamp(26px, 3.5vw, 36px); margin: 0 0 8px; letter-spacing: -.01em; }
+  .sub { color: var(--muted); margin: 0 0 30px; }
+
+  .videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .videos figure { margin: 0; }
+  .videos video { width: 100%; border-radius: 12px; display: block; background: #000; box-shadow: 0 0 0 1px var(--line); }
+  .videos figcaption { margin-top: 10px; font-weight: 600; }
+  .videos figcaption span { display: block; font-weight: 400; color: var(--muted); font-size: 15px; }
+
+  .feature { display: grid; grid-template-columns: 1fr 1.35fr; gap: 40px; align-items: center; padding: 34px 0; border-top: 1px solid var(--line); }
+  .feature:nth-of-type(even) { grid-template-columns: 1.35fr 1fr; }
+  .feature:nth-of-type(even) .text { order: 2; }
+  .feature img { width: 100%; border-radius: 12px; box-shadow: 0 0 0 1px var(--line), 0 20px 60px rgba(0,0,0,.45); }
+  .feature h3 { font-size: 24px; margin: 0 0 8px; }
+  .feature .tag { font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  .feature ul { padding-left: 20px; margin: 10px 0 0; color: #cfd4e3; }
+  .feature li { margin: 6px 0; }
+  @media (max-width: 780px) {
+    .feature, .feature:nth-of-type(even) { grid-template-columns: 1fr; gap: 18px; }
+    .feature:nth-of-type(even) .text { order: 0; }
+  }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; }
+  .card p { margin: 0; color: var(--muted); font-size: 15.5px; }
+  .card .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; box-shadow: 0 0 10px currentColor; background: currentColor; }
+
+  .req { margin-top: 20px; }
+  footer { margin: 80px 0 0; padding: 26px 0 40px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: flex; gap: 18px; flex-wrap: wrap; }
+  footer a { color: var(--muted); }
+  footer .right { margin-left: auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <a class="brand" href="agent-deck.html"><img src="icon.png" alt="">Agent Deck</a>
+    <a href="#previews" class="hide-sm">Previews</a>
+    <a href="#features">Features</a>
+    <a href="#get" class="hide-sm">Get it</a>
+    <a href="index.html">Support</a>
+  </nav>
+
+  <header class="hero">
+    <h1>Every agent. Every session.<br><span>One deck.</span></h1>
+    <p class="lead">Agent Deck is mission control for Claude Code. See what Claude and its subagents are doing in every project, live, and start, organize and review your work from one place.</p>
+    <div class="cta" id="get">
+      <span class="btn soon" aria-disabled="true"><small>Coming soon to the</small><b>Mac App Store</b></span>
+      <a class="btn primary" href="https://apps.microsoft.com/search?query=Agent%20Deck%20for%20Claude%20Code"><small>Get it for Windows from the</small><b>Microsoft Store</b></a>
+    </div>
+    <img class="poster" src="media/poster.jpg" alt="Agent Deck poster: the app's live topology of Claude sessions and subagents">
+  </header>
+
+  <section id="previews">
+    <h2>See it work</h2>
+    <p class="sub">Three short previews of Agent Deck on the Mac.</p>
+    <div class="videos">
+      <figure>
+        <video src="media/1-see-every-agent-live.mp4" poster="media/1-see-every-agent-live.jpg" controls muted playsinline preload="none"></video>
+        <figcaption>See every agent, live<span>Sessions and subagents appear the moment they start.</span></figcaption>
+      </figure>
+      <figure>
+        <video src="media/2-start-claude-in-one-click.mp4" poster="media/2-start-claude-in-one-click.jpg" controls muted playsinline preload="none"></video>
+        <figcaption>Start Claude in one click<span>Claude works in Terminal while Agent Deck follows along.</span></figcaption>
+      </figure>
+      <figure>
+        <video src="media/3-organize-and-review.mp4" poster="media/3-organize-and-review.jpg" controls muted playsinline preload="none"></video>
+        <figcaption>Organize and review<span>Agents, the change log, resources and local models.</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="features">
+    <h2>Everything Claude is doing, in one place</h2>
+    <p class="sub">Agent Deck follows Claude Code through its hooks, so you see real activity, not guesses.</p>
+
+    <div class="feature">
+      <div class="text">
+        <div class="tag">Live topology</div>
+        <h3>Watch every session and subagent</h3>
+        <ul>
+          <li>Every Claude session across all your projects, with the subagents each one is running right now.</li>
+          <li>A Running now panel shows what each one is doing, and which sessions are waiting for you.</li>
+          <li>History connects every agent a session launched, including finished ones.</li>
+        </ul>
+      </div>
+      <img src="media/01-topology-all-projects.jpg" alt="Global topology showing sessions and subagents across projects" loading="lazy">
+    </div>
+
+    <div class="feature">
+      <div class="text">
+        <div class="tag">Start Claude</div>
+        <h3>One click to start working</h3>
+        <ul>
+          <li>Start Claude in your project folder with the project's model, effort and mode.</li>
+          <li>Start as a specific agent, with a prompt, or resume an earlier session.</li>
+          <li>On the Mac, Claude runs in Terminal. On Windows, it runs in terminals inside Agent Deck.</li>
+        </ul>
+      </div>
+      <img src="media/08-working-session.jpg" alt="Agent Deck beside Terminal, following a Claude session live" loading="lazy">
+    </div>
+
+    <div class="feature">
+      <div class="text">
+        <div class="tag">Agent Map</div>
+        <h3>Link agents into handoffs</h3>
+        <ul>
+          <li>Draw which agent kicks off which, and Claude is told about the handoffs.</li>
+          <li>See your project, personal and built-in agents side by side.</li>
+        </ul>
+      </div>
+      <img src="media/02-agent-map.jpg" alt="The Agent Map linking agents into handoffs" loading="lazy">
+    </div>
+
+    <div class="feature">
+      <div class="text">
+        <div class="tag">Agents</div>
+        <h3>Organize your agents</h3>
+        <ul>
+          <li>Switch any agent on or off per project.</li>
+          <li>Create and edit agents in the app.</li>
+        </ul>
+      </div>
+      <img src="media/04-agents.jpg" alt="The Agents tab with project, user and built-in agents" loading="lazy">
+    </div>
+
+    <div class="feature">
+      <div class="text">
+        <div class="tag">Change log</div>
+        <h3>Keep a record of what got done</h3>
+        <ul>
+          <li>What Claude and its subagents did in each project, newest first, with the files they touched.</li>
+          <li>Add your own notes and decisions, and export the log as Markdown.</li>
+        </ul>
+      </div>
+      <img src="media/05-change-log.jpg" alt="The change log of sessions, subagents and notes" loading="lazy">
+    </div>
+  </section>
+
+  <section>
+    <h2>And more</h2>
+    <p class="sub">&nbsp;</p>
+    <div class="grid">
+      <div class="card"><h3><span class="dot" style="color:var(--accent)"></span>Universal instructions</h3><p>Rules you write once that every session reads first, in every project.</p></div>
+      <div class="card"><h3><span class="dot" style="color:var(--teal)"></span>Local mode</h3><p>Run Claude Code against an open-weight model on your computer through Ollama, at no token cost.</p></div>
+      <div class="card"><h3><span class="dot" style="color:var(--amber)"></span>Resources</h3><p>Drop in files for Claude to read, and add extra folders for new sessions.</p></div>
+      <div class="card"><h3><span class="dot" style="color:var(--accent)"></span>Notifications</h3><p>Know when Claude finishes or needs your input.</p></div>
+      <div class="card"><h3><span class="dot" style="color:var(--teal)"></span>Schedules (Windows)</h3><p>Run Claude on a schedule, like a nightly test triage, with every run's output kept.</p></div>
+      <div class="card"><h3><span class="dot" style="color:var(--amber)"></span>Private by design</h3><p>No account, no analytics. Your data stays on your computer. <a href="privacy.html">Privacy policy</a></p></div>
+    </div>
+    <p class="sub req">Requires Claude Code (installed separately from <a href="https://claude.com/claude-code">claude.com/claude-code</a>) and a Claude account. Local mode requires Ollama.</p>
+  </section>
+
+  <footer>
+    <span>© 2026 App Studio 427</span>
+    <a href="index.html">Support</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="mailto:support@appstudio427.com">support@appstudio427.com</a>
+    <span class="right">Not affiliated with Anthropic. Claude and Claude Code are trademarks of Anthropic.</span>
+  </footer>
+</div>
+</body>
+</html>
